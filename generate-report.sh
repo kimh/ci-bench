@@ -20,7 +20,12 @@ function main() {
     mkdir -p $dir
     pushd $dir
     download_data $platform
+    merge_files
     popd
+}
+
+function merge_files() {
+    cat result_*.json | jq -s '.' > data.json
 }
 
 main $1

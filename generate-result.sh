@@ -14,7 +14,7 @@ cat << EOF
 {
   "platform":"$PLATFORM",
   "build_num":$CIRCLE_BUILD_NUM,
-  "time":"$(date +'%Y/%m/%d %I:%M')",
+  "time":"$(date +'%Y/%m/%d %I:%M:%S')",
   "result": {
     "cpu":$cpu,
     "io":$io,
