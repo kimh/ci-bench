@@ -18,8 +18,6 @@ function main() {
 
     rm -rf $dir
     mkdir -p $dir
-    download_data $platform
-
     pushd $dir
     download_data $platform
     popd

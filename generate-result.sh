@@ -13,16 +13,16 @@ mysql_total=$(grep "total:" $benchmark_dir/mysql | awk '{printf "%f", $2}' | sed
 cat << EOF
 {
   "platform":"$PLATFORM",
-  "build_num":"$CIRCLE_BUILD_NUM",
-  "time":"$(date +%s)",
+  "build_num":$CIRCLE_BUILD_NUM,
+  "time":"$(date +'%Y/%m/%d %I:%M')",
   "result": {
-    "cpu":"$cpu",
-    "io":"$io",
+    "cpu":$cpu,
+    "io":$io,
     "mysql": {
-      "read": "$mysql_read",
-      "write": "$mysql_write",
-      "other": "$mysql_other",
-      "total": "$mysql_total"
+      "read": $mysql_read,
+      "write": $mysql_write,
+      "other": $mysql_other,
+      "total": $mysql_total
     }
   }
 }
