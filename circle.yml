@@ -5,6 +5,7 @@ jobs:
       - image: circleci/mysql:5.7
         environment:
           - PLATFORM: "2.0"
+          - S3_PATH: "s3://ci-bench2/circleci/$PLATFORM/"
 
       - image: circleci/mysql:5.7
 
@@ -36,5 +37,10 @@ jobs:
           name: MySQL benchmarking
 
       - run:
-          command: ./generate_result.sh | jq .#> /tmp/benchmark/result.json
+          command: ./generate-result.sh > /tmp/benchmark/result_$CIRCLE_BUILD_NUM.json
           name: Output result to json
+
+      - run: cat /tmp/benchmark/result_$CIRCLE_BUILD_NUM.json | jq .
+
+      - run:
+          command: aws s3 cp /tmp/benchmark/result_$CIRCLE_BUILD_NUM.json $S3_PATH
