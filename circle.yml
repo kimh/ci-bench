@@ -17,19 +17,23 @@ jobs:
       - run: mkdir /tmp/benchmark
 
       # CPU
-      - run: sysbench --events=20000 --time=600 cpu run > /tmp/benchmark/cpu
-        name: CPU benchmarking
+      - run:
+          command: sysbench --events=20000 --time=600 cpu run > /tmp/benchmark/cpu
+          name: CPU benchmarking
 
       # IO
       - run: sysbench fileio prepare
-      - run: sysbench --file-test-mode=rndrw --max-time=600 --events=10000 fileio run > /tmp/benchmark/io
-        name: IO benchmarking
+      - run:
+          command: sysbench --file-test-mode=rndrw --max-time=600 --events=10000 fileio run > /tmp/benchmark/io
+          name: IO benchmarking
 
       # Mysql
       - run: mysqladmin -u root -h 127.0.0.1 create dbtest
       - run: sysbench --test=/usr/share/sysbench/tests/include/oltp_legacy/oltp.lua --oltp-table-size=100000 --db-driver=mysql --mysql-db=dbtest --mysql-user=root --mysql-host=127.0.0.1 prepare
-      - run: sysbench --test=/usr/share/sysbench/tests/include/oltp_legacy/oltp.lua --oltp-read-only=off --oltp-table-size=100000 --oltp-test-mode=complex --num-threads=1 --max-requests=0 --max-time=60 --db-driver=mysql --mysql-db=dbtest --mysql-user=root --mysql-host=127.0.0.1 run > /tmp/benchmark/mysql
-        name: MySQL benchmarking
+      - run:
+          command: sysbench --test=/usr/share/sysbench/tests/include/oltp_legacy/oltp.lua --oltp-read-only=off --oltp-table-size=100000 --oltp-test-mode=complex --num-threads=1 --max-requests=0 --max-time=60 --db-driver=mysql --mysql-db=dbtest --mysql-user=root --mysql-host=127.0.0.1 run > /tmp/benchmark/mysql
+          name: MySQL benchmarking
 
-      # Results
-      - run: ./generate_result.sh | jq .#> /tmp/benchmark/result.json
+      - run:
+          command: ./generate_result.sh | jq .#> /tmp/benchmark/result.json
+          name: Output result to json
