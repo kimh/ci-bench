@@ -1,0 +1,25 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/mysql:5.7
+      - image: circleci/mysql:5.7
+
+    working_directory: /tmp/code
+    steps:
+      - run: apt-get update
+      - run: apt -y install curl
+      - run: curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.deb.sh | bash
+      - run: apt -y install sysbench
+
+      # CPU
+      - run: sysbench --test=cpu --cpu-max-prime=20000 run
+
+      # IO
+      - run: sysbench --test=fileio --file-total-size=10G prepare
+      - run: sysbench --test=fileio --file-total-size=10G --file-test-mode=rndrw --max-time=60 --max-requests=0 run
+  
+      # Mysql
+      - run: mysqladmin -u root -h 127.0.0.1 create dbtest
+      - run: sysbench --test=/usr/share/sysbench/tests/include/oltp_legacy/oltp.lua --oltp-table-size=100000 --db-driver=mysql --mysql-db=dbtest --mysql-user=root --mysql-host=127.0.0.1 prepare
+      - run: sysbench --test=/usr/share/sysbench/tests/include/oltp_legacy/oltp.lua --oltp-read-only=off --oltp-table-size=100000 --oltp-test-mode=complex --num-threads=1 --max-requests=0 --max-time=60 --db-driver=mysql --mysql-db=dbtest --mysql-user=root --mysql-host=127.0.0.1 run
