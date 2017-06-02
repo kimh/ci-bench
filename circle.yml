@@ -10,8 +10,9 @@ jobs:
 
     working_directory: /tmp/code
     steps:
+      - checkout
       - run: apt-get update
-      - run: apt -y install curl jq
+      - run: apt -y install curl jq awscli
       - run: curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.deb.sh | bash
       - run: apt -y install sysbench
       - run: mkdir /tmp/benchmark
