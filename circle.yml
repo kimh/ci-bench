@@ -5,7 +5,7 @@ jobs:
       - image: circleci/mysql:5.7
         environment:
           - PLATFORM: "2.0"
-          - S3_PATH: "s3://ci-bench2/circleci/$PLATFORM/"
+          - S3_BUCKET: "s3://ci-bench2"
 
       - image: circleci/mysql:5.7
 
@@ -43,4 +43,4 @@ jobs:
       - run: cat /tmp/benchmark/result_$CIRCLE_BUILD_NUM.json | jq .
 
       - run:
-          command: aws s3 cp /tmp/benchmark/result_$CIRCLE_BUILD_NUM.json $S3_PATH
+          command: aws s3 cp /tmp/benchmark/result_$CIRCLE_BUILD_NUM.json $S3_BUCKET/circleci/$PLATFORM/
