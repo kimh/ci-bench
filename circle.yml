@@ -5,7 +5,7 @@ jobs:
       - image: circleci/mysql:5.7
         environment:
           - PLATFORM: "2.0"
-          - S3_BUCKET: "s3://ci-bench2"
+          - S3_BUCKET: "s3://ci-bench"
 
       - image: circleci/mysql:5.7
 
