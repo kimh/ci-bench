@@ -15,15 +15,13 @@ cat << EOF
   "platform":"$PLATFORM",
   "build_num":$CIRCLE_BUILD_NUM,
   "time":"$(date +'%Y/%m/%d %I:%M:%S')",
-  "result": {
+  "benchmarks": {
     "cpu":$cpu,
     "io":$io,
-    "mysql": {
-      "read": $mysql_read,
-      "write": $mysql_write,
-      "other": $mysql_other,
-      "total": $mysql_total
-    }
+    "mysql_total_req":$mysql_total,
+    "mysql_read_req":$mysql_read,
+    "mysql_write_req":$mysql_write,
+    "mysql_other_req":$mysql_other
   }
 }
 EOF
