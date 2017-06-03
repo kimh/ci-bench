@@ -9,7 +9,7 @@ function download_data() {
     local platform=$1
     local s3_path="$s3_bucket/circleci/$platform/"
 
-    aws s3 cp $s3_path . --recursive
+    aws s3 cp $s3_path . --exclude="*" --include="result*" --recursive
 }
 
 function main() {
