@@ -16,4 +16,4 @@ jobs:
       - run: apt -y install sysbench
       - checkout
       - run: cd /tmp; git clone $CIRCLE_REPOSITORY_URL && cd ci-bench && git checkout master
-      - run: cd /tmp/ci-bench/benchmark.sh $PLATFORM $S3_BUCKET
+      - run: /tmp/ci-bench/benchmark.sh $PLATFORM $S3_BUCKET
