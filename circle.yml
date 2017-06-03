@@ -13,7 +13,7 @@ jobs:
     steps:
       - run: apt-get update; apt -y install curl jq awscli git
       - run: curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.deb.sh | bash
-      - run: apt -y sysbench
+      - run: apt -y install sysbench
 
       - checkout
 
