@@ -9,14 +9,10 @@ jobs:
 
       - image: circleci/mysql:5.7
 
-    working_directory: /tmp/code
+    working_directory: /tmp
     steps:
       - run: apt-get update; apt -y install curl jq awscli git
       - run: curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.deb.sh | bash
       - run: apt -y install sysbench
-
-      - checkout
-
-      - run: git clean -f .; git checkout master
-
-      - run: ./benchmark.sh $PLATFORM $S3_BUCKET
+      - run: git clone $CIRCLE_REPOSITORY_URL && git checkout master
+      - run: cd ci-bench && ./benchmark.sh $PLATFORM $S3_BUCKET
