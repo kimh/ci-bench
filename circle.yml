@@ -10,7 +10,6 @@ dependencies:
     - git config --global user.email "you@example.com"; git config --global user.name "Your Name";
     - git pull --no-edit $CIRCLE_REPOSITORY_URL master || true
     - git pull --rebase $CIRCLE_REPOSITORY_URL master
-    - git checkout master
     - ./benchmark.sh $PLATFORM $S3_BUCKET
 
 test:
