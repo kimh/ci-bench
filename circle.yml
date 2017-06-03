@@ -7,7 +7,7 @@ dependencies:
   override:
     - curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.deb.sh | sudo bash
     - sudo apt -y install sysbench
-    - git config --global user.email "you@example.com"; git config --global user.name "Your Name"; git pull --no-edit $CIRCLE_REPOSITORY_URL master && git pull rebase && git checkout master
+    - git config --global user.email "you@example.com"; git config --global user.name "Your Name"; git pull --no-edit $CIRCLE_REPOSITORY_URL master && git pull --rebase && git checkout master
     - ./benchmark.sh $PLATFORM $S3_BUCKET
 
 test:
