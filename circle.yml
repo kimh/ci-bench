@@ -11,36 +11,11 @@ jobs:
 
     working_directory: /tmp/code
     steps:
-      - checkout
-      - run: apt-get update
-      - run: apt -y install curl jq awscli
       - run: curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.deb.sh | bash
-      - run: apt -y install sysbench
-      - run: mkdir /tmp/benchmark
+      - run: apt -y install curl jq awscli git sysbench
 
-      # CPU
-      - run:
-          command: sysbench --events=20000 --time=600 cpu run > /tmp/benchmark/cpu
-          name: CPU benchmarking
+      - checkout
 
-      # IO
-      - run: sysbench fileio prepare
-      - run:
-          command: sysbench --file-test-mode=rndrw --max-time=600 --events=10000 fileio run > /tmp/benchmark/io
-          name: IO benchmarking
+      - run: git clean -f .; git checkout master
 
-      # Mysql
-      - run: mysqladmin -u root -h 127.0.0.1 create dbtest
-      - run: sysbench --test=/usr/share/sysbench/tests/include/oltp_legacy/oltp.lua --oltp-table-size=100000 --db-driver=mysql --mysql-db=dbtest --mysql-user=root --mysql-host=127.0.0.1 prepare
-      - run:
-          command: sysbench --test=/usr/share/sysbench/tests/include/oltp_legacy/oltp.lua --oltp-read-only=off --oltp-table-size=100000 --oltp-test-mode=complex --num-threads=1 --max-requests=0 --max-time=60 --db-driver=mysql --mysql-db=dbtest --mysql-user=root --mysql-host=127.0.0.1 run > /tmp/benchmark/mysql
-          name: MySQL benchmarking
-
-      - run:
-          command: ./generate-result.sh > /tmp/benchmark/result_$CIRCLE_BUILD_NUM.json
-          name: Output result to json
-
-      - run: cat /tmp/benchmark/result_$CIRCLE_BUILD_NUM.json | jq .
-
-      - run:
-          command: aws s3 cp /tmp/benchmark/result_$CIRCLE_BUILD_NUM.json $S3_BUCKET/circleci/$PLATFORM/
+      - run: ./benchmark.sh $PLATFORM $S3_BUCKET
