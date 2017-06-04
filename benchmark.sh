@@ -67,6 +67,8 @@ function generate_result {
     mysql_write=$(grep "write:" $benchmark_dir/mysql | awk '{printf "%f", $2}' | sed 's/s$//')
     mysql_other=$(grep "other:" $benchmark_dir/mysql | awk '{printf "%f", $2}' | sed 's/s$//')
     mysql_total=$(grep "total:" $benchmark_dir/mysql | awk '{printf "%f", $2}' | sed 's/s$//')
+    db_migrate=$(cat $benchmark_dir/db_migrate)
+    rspec=$(cat $benchmark_dir/rspec)
 
     cat << EOF
 {
@@ -79,7 +81,9 @@ function generate_result {
     "mysql_total_req":$mysql_total,
     "mysql_read_req":$mysql_read,
     "mysql_write_req":$mysql_write,
-    "mysql_other_req":$mysql_other
+    "mysql_other_req":$mysql_other,
+    "db_migrate":$db_migrate,
+    "rspec":$rspec
   }
 }
 EOF
