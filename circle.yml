@@ -17,3 +17,8 @@ jobs:
       - checkout
       - run: cd /tmp; git clone $CIRCLE_REPOSITORY_URL && cd ci-bench && git checkout master
       - run: /tmp/ci-bench/benchmark.sh $PLATFORM $S3_BUCKET
+
+      - type: cache-restore
+        key: diaspora-{{ checksum "diaspora/Gemfile.lock" }}
+
+      - run: ./diaspora-benchmark.sh
