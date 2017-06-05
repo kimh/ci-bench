@@ -58,6 +58,14 @@ function mysql_throughput {
              run > $result_dir
 }
 
+function public_ip {
+    if [ -v "CIRCLE_INTERNAL_CONFIG" ]; then
+        echo -n $(jq -r .AdvertisedHostIp $CIRCLE_INTERNAL_CONFIG)
+    else
+        echo -n ""
+    fi
+}
+
 function generate_result {
     local benchmark_dir=$1
 
@@ -75,6 +83,7 @@ function generate_result {
   "platform":"$PLATFORM",
   "build_num":$CIRCLE_BUILD_NUM,
   "time":"$(date +'%Y/%m/%d %H:%M:%S')",
+  "ip":$(public_ip),
   "benchmarks": {
     "cpu":$cpu,
     "io":$io,
