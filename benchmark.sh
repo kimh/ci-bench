@@ -83,7 +83,7 @@ function generate_result {
   "platform":"$PLATFORM",
   "build_num":$CIRCLE_BUILD_NUM,
   "time":"$(date +'%Y/%m/%d %H:%M:%S')",
-  "ip":$(public_ip),
+  "ip":"$(public_ip)",
   "benchmarks": {
     "cpu":$cpu,
     "io":$io,
