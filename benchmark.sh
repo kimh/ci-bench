@@ -99,15 +99,15 @@ EOF
 }
 
 function upload_s3 {
-    local platform=$1
+    local branch=$1
     local s3_bucket=$2
-    local s3_path=$s3_bucket/circleci/$platform/
+    local s3_path=$s3_bucket/circleci/$branch/
 
     echo "Uploading benchmark result to $s3_path ....."
     aws s3 cp /tmp/benchmark/result_$CIRCLE_BUILD_NUM.json $s3_path
 }
 
-platform=$1
+branch=$1
 s3_bucket=$2
 result_dir="/tmp/benchmark"
 
@@ -122,4 +122,4 @@ generate_result $result_dir > $result_dir/result_$CIRCLE_BUILD_NUM.json
 echo "======== Benchmark Result =========="
 cat $result_dir/result_$CIRCLE_BUILD_NUM.json | jq .
 
-upload_s3 $platform $s3_bucket
+upload_s3 $branch $s3_bucket
