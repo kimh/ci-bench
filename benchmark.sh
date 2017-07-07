@@ -9,7 +9,7 @@ function cpu_throughput {
     local result_dir=$2
 
     echo "Running CPU benchmarking..."
-    sysbench --time=$time cpu run  > $result_dir
+    sysbench --threads=4 --time=$time cpu run  > $result_dir
 }
 
 function io_throughput {
